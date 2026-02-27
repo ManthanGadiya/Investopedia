@@ -7,15 +7,28 @@ const API_BASE = window.location.port === "8000" ? "" : "http://127.0.0.1:8000";
 
 const views = ["home", "categories", "articles", "featured", "contact", "auth", "articleDetail"];
 const statusBar = document.getElementById("statusBar");
+const topbar = document.getElementById("topbar");
 const categoriesList = document.getElementById("categoriesList");
 const categoryFilter = document.getElementById("categoryFilter");
 const articlesList = document.getElementById("articlesList");
 const featuredList = document.getElementById("featuredList");
 const articleDetail = document.getElementById("articleDetail");
+const categoryIntro = document.getElementById("categoryIntro");
+const articleCategoryIntro = document.getElementById("articleCategoryIntro");
+const articleDetailBody = document.getElementById("articleDetailBody");
 
 function setStatus(text, isError = false) {
   statusBar.textContent = text;
   statusBar.style.borderColor = isError ? "#ef4444" : "#dde3ee";
+}
+
+function updateAuthLayout() {
+  if (!topbar) return;
+  if (state.token) {
+    topbar.classList.remove("hidden");
+  } else {
+    topbar.classList.add("hidden");
+  }
 }
 
 function showView(viewId) {
@@ -38,7 +51,17 @@ async function api(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(body.detail || `Request failed: ${response.status}`);
+    let message = `Request failed: ${response.status}`;
+    if (typeof body.detail === "string") {
+      message = body.detail;
+    } else if (Array.isArray(body.detail)) {
+      message = body.detail
+        .map((item) => item.msg || item.message || JSON.stringify(item))
+        .join(" | ");
+    } else if (body.message) {
+      message = body.message;
+    }
+    throw new Error(message);
   }
   return body;
 }
@@ -86,6 +109,7 @@ async function loadArticles() {
   if (search) qs.set("search", search);
   const data = await api(`/api/articles?${qs.toString()}`);
   articlesList.innerHTML = data.items.map(articleCard).join("") || "<p>No articles found.</p>";
+  renderCategoryIntro(category);
   bindArticleActions();
 }
 
@@ -98,7 +122,7 @@ async function loadFeatured() {
 async function openArticle(slug) {
   const data = await api(`/api/articles/${slug}`);
   const img = data.cover_image_url || `https://picsum.photos/seed/${data.slug}/860/460`;
-  articleDetail.innerHTML = `
+  articleDetailBody.innerHTML = `
     <img class="thumb" src="${img}" alt="${data.title}">
     <h2>${data.title}</h2>
     <small>
@@ -108,6 +132,7 @@ async function openArticle(slug) {
     <p><strong>Summary:</strong> ${data.summary || "N/A"}</p>
     <p>${data.content}</p>
   `;
+  renderArticleCategoryIntro(data.category.slug);
   showView("articleDetail");
   bindArticleActions();
 }
@@ -137,6 +162,117 @@ async function filterByCategory(slug) {
   }
 }
 
+function renderCategoryIntro(slug) {
+  if (!slug) {
+    categoryIntro.classList.add("hidden");
+    categoryIntro.innerHTML = "";
+    return;
+  }
+  const category = state.categories.find((c) => c.slug === slug);
+  if (!category) return;
+  const sections = parseGuideSections(category.description || "Guidance coming soon.");
+  const paragraphBlocks = sections
+    .map((s, i) => {
+      const sizeClass = i % 3 === 0 ? "size-lg" : i % 3 === 1 ? "size-md" : "size-sm";
+      const body = formatGuideBody(s.body, sizeClass);
+      return `
+        <details class="guide-drop" ${i === 0 ? "open" : ""}>
+          <summary>${s.title}</summary>
+          ${body}
+        </details>
+      `;
+    })
+    .join("");
+  const title = `${category.name} - Quick Guidance`;
+  const image = category.icon || "/static/website.jpeg";
+  const insights = sections
+    .slice(0, 3)
+    .map((s) => s.title.replace(/^\d+\)\s*/, "").trim())
+    .filter((p) => p)
+    .map((p) => `<div class="guide-chip">${p}.</div>`)
+    .join("");
+  categoryIntro.classList.remove("hidden");
+  categoryIntro.innerHTML = `
+    <div class="guide-hero">
+      <img src="${image}" alt="${category.name}">
+      <div class="guide-hero-body">
+        <h3>${title}</h3>
+        <div class="guide-chip-wrap">${insights}</div>
+      </div>
+    </div>
+    <div class="guide-drop-wrap">${paragraphBlocks}</div>
+  `;
+}
+
+function renderArticleCategoryIntro(slug) {
+  const category = state.categories.find((c) => c.slug === slug);
+  if (!category) {
+    articleCategoryIntro.classList.add("hidden");
+    articleCategoryIntro.innerHTML = "";
+    return;
+  }
+  const sections = parseGuideSections(category.description || "Guidance coming soon.");
+  const paragraphBlocks = sections
+    .map((s, i) => {
+      const sizeClass = i % 3 === 0 ? "size-lg" : i % 3 === 1 ? "size-md" : "size-sm";
+      const body = formatGuideBody(s.body, sizeClass);
+      return `
+        <details class="guide-drop" ${i === 0 ? "open" : ""}>
+          <summary>${s.title}</summary>
+          ${body}
+        </details>
+      `;
+    })
+    .join("");
+  articleCategoryIntro.classList.remove("hidden");
+  articleCategoryIntro.innerHTML = `
+    <div class="guide-hero compact">
+      <img src="${category.icon || "/static/website.jpeg"}" alt="${category.name}">
+      <div class="guide-hero-body">
+        <h3>${category.name} - How To Approach</h3>
+      </div>
+    </div>
+    <div class="guide-drop-wrap">${paragraphBlocks}</div>
+  `;
+}
+
+function parseGuideSections(text) {
+  const raw = text
+    .split("\n\n---\n\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (!raw.length) return [{ title: "Guidance", body: text }];
+
+  return raw.map((block, idx) => {
+    const lines = block.split("\n").filter((l) => l.trim());
+    let title = `Section ${idx + 1}`;
+    if (lines[0] && lines[0].startsWith("##")) {
+      title = lines[0].replace(/^##\s*/, "").trim();
+      lines.shift();
+    }
+    return { title, body: lines.join("\n") };
+  });
+}
+
+function formatGuideBody(body, sizeClass) {
+  const pieces = body
+    .split("\n\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  return pieces
+    .map((piece) => {
+      const lines = piece.split("\n").map((l) => l.trim()).filter(Boolean);
+      const bulletLines = lines.filter((l) => l.startsWith("- "));
+      if (bulletLines.length && bulletLines.length === lines.length) {
+        return `<ul class=\"guide-list ${sizeClass}\">${bulletLines
+          .map((b) => `<li>${b.replace(/^-\\s*/, "")}</li>`)
+          .join("")}</ul>`;
+      }
+      return `<p class=\"guide-paragraph ${sizeClass}\">${lines.join(" ")}</p>`;
+    })
+    .join("");
+}
+
 async function initSession() {
   if (!state.token) {
     setStatus("Not logged in.");
@@ -154,6 +290,11 @@ async function initSession() {
 
 document.querySelectorAll(".nav-btn[data-view]").forEach((btn) => {
   btn.addEventListener("click", async () => {
+    if (!state.token && btn.dataset.view !== "auth") {
+      showView("auth");
+      setStatus("Please login or signup to continue.");
+      return;
+    }
     showView(btn.dataset.view);
     try {
       if (btn.dataset.view === "categories") await loadCategories();
@@ -189,6 +330,26 @@ document.getElementById("refreshFeaturedBtn").onclick = async () => {
   }
 };
 
+document.getElementById("homeExploreArticles").onclick = async () => {
+  if (!state.token) {
+    showView("auth");
+    setStatus("Please login or signup to continue.");
+    return;
+  }
+  showView("articles");
+  await loadArticles();
+};
+
+document.getElementById("homeExploreFeatured").onclick = async () => {
+  if (!state.token) {
+    showView("auth");
+    setStatus("Please login or signup to continue.");
+    return;
+  }
+  showView("featured");
+  await loadFeatured();
+};
+
 document.getElementById("loginForm").onsubmit = async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
@@ -202,6 +363,7 @@ document.getElementById("loginForm").onsubmit = async (e) => {
     });
     state.token = data.access_token;
     localStorage.setItem("token", state.token);
+    updateAuthLayout();
     setStatus(`Logged in as ${data.user.name}`);
     showView("home");
   } catch (err) {
@@ -223,6 +385,7 @@ document.getElementById("signupForm").onsubmit = async (e) => {
     });
     state.token = data.access_token;
     localStorage.setItem("token", state.token);
+    updateAuthLayout();
     setStatus(`Account created for ${data.user.name}`);
     showView("home");
   } catch (err) {
@@ -262,13 +425,22 @@ document.getElementById("logoutBtn").onclick = async () => {
   }
   state.token = "";
   localStorage.removeItem("token");
+  updateAuthLayout();
+  showView("auth");
   setStatus("Logged out.");
 };
 
 initSession().then(async () => {
+  updateAuthLayout();
   try {
     await loadCategories();
     await loadFeatured();
+    if (!state.token) {
+      showView("auth");
+      setStatus("Welcome. Please login or signup to start.");
+    } else {
+      showView("home");
+    }
   } catch (e) {
     setStatus(e.message, true);
   }

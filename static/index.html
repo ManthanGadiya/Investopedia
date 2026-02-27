@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Investopedia Guide</title>
+  <title>Investopedia</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">Investopedia Guide</div>
+  <header id="topbar" class="topbar">
+    <div class="brand">
+      <img src="/static/logo.jpeg" alt="Investopedia Logo" class="brand-logo">
+      <div>
+        <div class="brand-title">Investopedia</div>
+        <div class="brand-sub">Smart Investment Learning Portal</div>
+      </div>
+    </div>
     <nav class="menu">
       <button class="nav-btn active" data-view="home">Home</button>
-      <button class="nav-btn" data-view="categories">Categories</button>
+      <button class="nav-btn" data-view="categories">Investment</button>
       <button class="nav-btn" data-view="articles">Articles</button>
       <button class="nav-btn" data-view="featured">Featured</button>
       <button class="nav-btn" data-view="contact">Contact</button>
@@ -24,12 +30,27 @@
     <section id="statusBar" class="card"></section>
 
     <section id="home" class="view card">
-      <h2>Welcome</h2>
-      <p>Simple investment guidance portal with categories, random article discovery, and featured picks.</p>
+      <div class="hero">
+        <div class="hero-text">
+          <p class="kicker">Learn. Analyze. Decide.</p>
+          <h2>Invest with clear guidance, not confusion</h2>
+          <p>
+            Explore curated content across stocks, mutual funds, real estate, commodities, economy,
+            and more. Discover 10 random articles instantly and refresh for a new set anytime.
+          </p>
+          <div class="hero-actions">
+            <button id="homeExploreArticles">Explore Articles</button>
+            <button id="homeExploreFeatured" class="ghost-btn">Explore Featured</button>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="/static/website.jpeg" alt="Website style preview">
+        </div>
+      </div>
     </section>
 
     <section id="categories" class="view card hidden">
-      <h2>Categories</h2>
+      <h2>Investment</h2>
       <div id="categoriesList" class="grid"></div>
     </section>
 
@@ -38,6 +59,7 @@
         <h2>Articles</h2>
         <button id="refreshArticlesBtn">Refresh 10 Random</button>
       </div>
+      <div id="categoryIntro" class="card hidden"></div>
       <div class="row wrap">
         <input id="searchInput" type="text" placeholder="Search articles...">
         <select id="categoryFilter">
@@ -83,7 +105,10 @@
       </form>
     </section>
 
-    <section id="articleDetail" class="view card hidden"></section>
+    <section id="articleDetail" class="view card hidden">
+      <div id="articleCategoryIntro" class="card hidden"></div>
+      <div id="articleDetailBody"></div>
+    </section>
   </main>
   <script src="/static/app.js"></script>
 </body>
