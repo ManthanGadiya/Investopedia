@@ -6,6 +6,7 @@ from pathlib import Path
 from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
@@ -34,6 +35,14 @@ app = FastAPI()
 auth_scheme = HTTPBearer(auto_error=False)
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
