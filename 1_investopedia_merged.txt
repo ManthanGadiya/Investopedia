@@ -1,0 +1,386 @@
+Preliminary Investigation and Its Activities
+
+1. Problem Identification and Definition
+
+Many individuals, especially those new to investing, struggle to make informed decisions about
+where and how to invest their savings, such as 10 lakhs. The lack of personalized guidance,
+real-time market insights, and curated knowledge often leads to suboptimal investment choices,
+resulting in lower returns or higher risks.
+
+2. Problem Description
+
+Investors face challenges like information overload, difficulty understanding complex financial
+products, and lack of timely updates on market trends. Existing platforms may provide raw
+data but often fail to offer tailored advice or integrate multiple investment options in a user-
+friendly manner. This gap makes it hard for users to confidently allocate their funds across
+various instruments like stocks, mutual funds, fixed deposits, or bonds.
+
+3. Fact Finding Techniques
+
+3.1. Observation
+Observing potential users interacting with current investment platforms reveals confusion due
+to complex interfaces and overwhelming data. Many users spend excessive time researching
+without clear direction, indicating a need for simplified, guided investment advice.
+3.2. Interviews
+Conducting interviews with novice investors, financial advisors, and platform users uncovers
+common pain points such as lack of trust in automated recommendations, difficulty
+
+                                                        1
+understanding jargon, and desire for personalized investment plans aligned with individual risk
+profiles and goals.
+3.3. Questionnaires/Surveys
+Surveys distributed among college students, young professionals, and middle-aged investors
+highlight that a significant percentage feel under-informed about investment options and
+express interest in a platform that offers curated knowledge, real-time insights, and easy-to-
+understand guidance.
+
+3.4. Document Review
+Reviewing financial reports, market analysis, and existing investment apps' documentation
+shows that while data availability is high, integration and personalization remain limited.
+Regulatory guidelines also emphasize the importance of investor education and transparency,
+which current systems partially address.
+
+4. Drawbacks of Existing Systems
+
+    · Lack of personalized investment advice tailored to individual goals and risk tolerance.
+    · Overwhelming and complex user interfaces that intimidate beginners.
+    · Insufficient real-time insights and alerts to help users react promptly to market changes.
+    · Limited integration of diverse investment options in a single platform.
+    · Minimal educational content to help users understand investment fundamentals.
+
+5. Scope for the Proposed System
+
+The proposed Smart Investment Guide Platform aims to:
+    · Provide personalized investment recommendations based on user profiles and goals.
+
+                                                        2
+    · Offer curated educational content to improve financial literacy.
+    · Integrate multiple investment options (stocks, mutual funds, fixed deposits, bonds) in
+
+       one place.
+    · Deliver real-time market insights and alerts to enable timely decisions.
+    · Feature an intuitive, user-friendly interface suitable for beginners and experienced
+
+       investors alike.
+
+6. Feasibility Study
+
+Technical Feasibility:
+The platform can be developed using existing technologies such as data analytics, machine
+learning for personalized recommendations, and APIs for real-time market data. Cloud
+infrastructure can support scalability and security.
+
+    Economic Feasibility:
+Initial development costs are moderate, with potential revenue streams from premium features,
+advisory services, or partnerships with financial institutions. The growing interest in personal
+finance apps suggests a viable market.
+
+    Operational Feasibility:
+Users are increasingly comfortable with digital financial tools. The platform's educational
+focus and ease of use will encourage adoption. Continuous updates and customer support will
+ensure sustained engagement.
+
+    Legal Feasibility:
+Compliance with financial regulations and data privacy laws will be ensured through proper
+legal consultation and adherence to guidelines.
+
+                                                        3
+                Requirement Specification
+
+1. Data Requirement of the System
+
+The system requires various types of data to function effectively and provide meaningful
+investment guidance:
+
+· User Profile Data: Personal details such as age, income, investment goals, risk tolerance,
+   and investment horizon.
+
+· Market Data: Real-time and historical data on stocks, mutual funds, bonds, fixed deposits,
+   and other investment instruments. This includes prices, returns, volatility, and market news.
+
+· Financial Product Information: Details about different investment options including
+   interest rates, maturity periods, fund performance, fees, and terms & conditions.
+
+· Educational Content: Curated articles, tutorials, FAQs, and glossaries to help users
+   understand investment concepts.
+
+· Transaction Data: Records of user investments, portfolio allocations, and transaction
+   history for tracking and analysis.
+
+· Regulatory and Compliance Data: Information related to financial regulations to ensure
+   recommendations comply with legal standards.
+
+2. Identify End Users of the System
+
+The platform is designed to serve a diverse group of users, including:
+
+· Novice Investors: Individuals with little or no prior investment experience seeking
+   guidance to start investing their savings wisely.
+
+· Experienced Investors: Users who want to optimize their portfolios with real-time
+   insights and personalized recommendations.
+
+· Financial Advisors: Professionals who may use the platform to assist clients with curated
+   knowledge and data-driven advice.
+
+· Students and Learners: Individuals interested in improving their financial literacy and
+   understanding investment fundamentals.
+
+· Retirees and Senior Citizens: Users looking for safe and stable investment options
+   aligned with their retirement goals.
+
+                                                        1
+3. Input Data of the System
+
+The system will accept the following inputs from users and external sources:
+· User Inputs:
+
+   ­ Personal information (age, income, financial goals)
+   ­ Risk appetite (conservative, moderate, aggressive)
+   ­ Investment amount (e.g., 10 lakhs)
+   ­ Preferred investment duration and liquidity needs
+   ­ Feedback and preferences on investment options
+· External Inputs:
+   ­ Real-time market feeds and price updates via APIs
+   ­ Financial news and alerts
+   ­ Updated product details from financial institutions
+   ­ Regulatory updates and compliance rules
+
+4. Output Information from the System
+
+The platform will generate and present the following outputs to users:
+· Personalized Investment Plans: Tailored recommendations based on user profile and
+
+   market conditions.
+· Portfolio Suggestions: Optimal allocation across various instruments like stocks, mutual
+
+   funds, fixed deposits, and bonds.
+· Real-Time Alerts: Notifications about market movements, investment opportunities, or
+
+   risks.
+· Educational Insights: Easy-to-understand articles, tips, and tutorials relevant to the user's
+
+   investment journey.
+· Performance Reports: Periodic summaries showing portfolio growth, returns, and risk
+
+   metrics.
+· Comparative Analysis: Side-by-side comparison of different investment options to aid
+
+   decision-making.
+
+                                                        2
+5. Functional, Non-Functional, and Processing Requirements
+
+5.1. Functional Requirements
+· User registration and profile management.
+· Risk assessment questionnaire to determine user risk tolerance.
+· Integration with real-time market data providers.
+· Algorithm to generate personalized investment recommendations.
+· Dashboard to display portfolio status, alerts, and educational content.
+· Search and filter options for exploring investment products.
+· Secure transaction and investment tracking module.
+· Feedback mechanism for users to rate recommendations and content.
+
+5.2. Non-Functional Requirements
+· Usability: Intuitive and user-friendly interface accessible on web and mobile devices.
+· Performance: Fast response times for data retrieval and recommendation generation.
+· Scalability: Ability to handle growing numbers of users and data volume without
+
+   degradation.
+· Security: Robust data protection, encryption, and compliance with privacy laws to
+
+   safeguard user information.
+· Reliability: High availability with minimal downtime and accurate data feeds.
+· Maintainability: Modular design to allow easy updates and addition of new features.
+
+5.3. Processing Requirements
+· Real-time processing of market data to update recommendations and alerts promptly. ·
+
+   Batch processing for generating periodic performance reports and educational content
+   updates.
+· Data validation and error handling to ensure input accuracy and system stability.
+· Machine learning or rule-based algorithms to analyze user data and market trends for
+   personalized advice.
+
+                                                        3
+3. DATABASE DESIGN
+
+3.1 Identify the Entities and the Attributes
+             USERS
+
+-User ID
+-Name
+-Email ID
+-Sign up
+-Phone no
+
+      INVESTMENT
+-Investment ID
+-Initial Investment
+-Investment Type
+
+    INFORMATION
+-Information ID
+-Strategy
+-Description
+-Current value
+
+   KNOWLEDGE
+-Knowledge ID
+-Innvesting Idea
+3.3 Identifying all tables,fields and relationships
+
+Table 1:Website       Data type          key                 description
+                      Varchar(100)       Primary key         Website full name
+ Field name           Varchar(50)        Unique key          Link of the website
+ Name
+ URL
+
+Table 2:User               datatype                  key     description
+                           int                       PK      Unique id for each user
+ Field name                Varchar(50)                       User's full name
+ User ID                   Varchar(50)               unique  User's contact no
+ Name                      Varchar(50)                       User's email id
+ Phone no
+ Email ID
+
+Table 3:Investment
+
+Field type                 datatype                  Key     description
+                                                             Unique id for each
+Investment id              Int                       PK      investment idea
+                                                             Upto how much the user
+Initial investment         float                             has to invest
+                                                             Interest rate of selected
+Interest rate              percent                           investment
+                                                             In which topic the user
+Investment type            Varchar(100)                      has to invest
+                                                             Amount of risk in the
+Risk level                 percent                           investment.
+
+Table 4: Information
+
+Field name                 Data type                 key     Description
+                                                             Unique id for each
+Information                int                       PK      information provided
+                                                             Current value of the
+Current value              float                             following investment
+                                                             idea
+Strategy                   Varchar(100)                      Strategy or ideas for
+description                Varchar(100)                      investing
+                                                             Details about the
+                                                             selected investment
+
+Table 5: Knowledge
+
+Field name            Data type          key                 Description
+                                                             Unique ID for each
+Knowledge ID          Int                                    knowledge
+                                                             How invest all
+Investment ideas Varchar(100)                                knowledge is
+                                                             provided
+3.4 Normalize Database
+
+We assume attributes:-
+
+-User ID
+
+-User Name
+
+-Investment Type
+
+-Initial Investment
+
+Take 5 sample record(UNNORMALIZED FORM-UNF)
+
+User ID                   Name                Investment Type                 Initial Invesment
+101                       Akshay              Silver                          170 , 20000
+102                       Ridhima             Real-Estate                     50000
+103                       Kajal               Share Market , Silver           200 , 10000
+104                       Ritvik              Stocks                          1000
+105                       Shanky              Mutual Funds                    15000
+
+· Solution:- 1NF (First Normal Form)
+
+          Rule:- No repeating groups/multivalued attributes
+
+          Each cell must hold atomic values.
+
+          User ID         User Name                          Investment Type  Initial Investment
+          101             Akshay                             Gold             20000
+          102             Ridhima                            Silver           10000
+          103             Kajal                              Real-estate      50000
+          104             Aishan                             Stocks           1000
+          105             Shanky                             Mutual funds     25000
+
+· 2NF ( Second Normal Form )
+
+          Rule:- Must be in 1NF + No partial dependency (every non-key attribute must dependon whole primary
+          key)
+
+          Here ,composite key=(user ID , investment type selected) but attributes like user_name ,initial
+          investment, depends only on user_Id not on investment type , so we split we split it into two tables.
+
+          Table 1:- User
+
+           User_ID                                           User_name
+           101                                               Akshay
+           102                                               Ridhima
+           103                                               Kajal
+           104                                               Ritvik
+          2NF(Second Normal Form)
+
+          Rule: Must be in INF + No partial dependency(every non key attribute must depend on whole primary
+          key)
+Here,composite key=(User ID, investment type selected) but attributes like user _name,initial
+investment,depend only on user_id not on investment type,so we split it into two tables.
+
+Table 1:User                             User_name
+ User_id                                 Akshay
+ 101                                     Ridhima
+ 102                                     Kajal
+ 103                                     Ritvik
+ 104
+
+Table 2 : Investment Type
+
+Investment ID              User ID       Investment type  Initial Investment
+                                         Gold             20000
+01                         101           Silver           10000
+                                         Real-estate      50000
+02                         102           Stocks           1000
+                                         Mutual funds     25000
+03                         103
+
+04                         104
+
+05                         105
+
+3NF(Third Normal Form)
+
+Rule:- Must be in 2NF+ No transitive dependency (non key attribute should not depend on another non
+key attribute)
+In user table,User table,user_name depends only on udser_id
+
+Investment ID directly depends on user ID
+Non-transitive dependency here,but if we want to refine further,we can separate information details into
+another table.
+
+Table 3: Information            Info ID                   Information
+ Investment ID                  I1                        Gold prices are high globally
+ 01                                                       due to a safe haven demand.
+                                I2                        Real estate include a 30% drop
+ 02                                                       in affordable housing supply.
+                                I3                        Stock market
+ 03                                                       population/volume is
+                                                          decreasing day by day.
+Class Diagram
+Object Diagram
+Component Diagram
+Deployment Diagram
+Use Case Diagram
+Activity Diagram
+State Diagram
+Sequence Diagram
+Collaboration Diagram
+

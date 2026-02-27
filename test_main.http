@@ -1,0 +1,64 @@
+@baseUrl = http://127.0.0.1:8000
+@token = paste_token_here
+
+### Root
+GET {{baseUrl}}/
+Accept: application/json
+
+### 1) Signup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Neha Verma",
+  "email": "neha@example.com",
+  "password": "Neha@123"
+}
+
+### 2) Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "aarav@example.com",
+  "password": "Aarav@123"
+}
+
+### 4) Me
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### 3) Logout
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{token}}
+
+### 7) Categories
+GET {{baseUrl}}/api/categories
+Accept: application/json
+
+### 8) Category by Slug
+GET {{baseUrl}}/api/categories/gold
+Accept: application/json
+
+### 9) Articles List
+GET {{baseUrl}}/api/articles?category=mutual-funds&search=return&page=1&page_size=5
+Accept: application/json
+
+### 10) Article by Slug
+GET {{baseUrl}}/api/articles/sensex-down-600-beginner-checklist
+Accept: application/json
+
+### 11) Featured
+GET {{baseUrl}}/api/featured?limit=6
+Accept: application/json
+
+### 17) Contact
+POST {{baseUrl}}/api/contact
+Content-Type: application/json
+
+{
+  "name": "Kunal Shah",
+  "email": "kunal@example.com",
+  "subject": "Need article on SIP basics",
+  "message": "Please publish a simple beginner article comparing SIP in equity and debt funds."
+}
