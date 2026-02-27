@@ -1,0 +1,146 @@
+:root {
+  --bg: #f4f7fb;
+  --panel: #ffffff;
+  --ink: #1f2937;
+  --muted: #5b6474;
+  --line: #dde3ee;
+  --brand: #0f766e;
+  --brand-soft: #d9f5f2;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #eef5ff 0%, var(--bg) 70%);
+  color: var(--ink);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: #0b1220;
+  color: #e6edf7;
+  padding: 20px 14px;
+}
+
+.sidebar h1 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  margin: 6px 0;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #121d33;
+  color: #d8e4ff;
+  cursor: pointer;
+}
+
+.nav-btn.active,
+.nav-btn:hover {
+  background: #183157;
+}
+
+.content {
+  padding: 20px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: var(--brand-soft);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.article {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.article h3 {
+  margin: 0 0 6px;
+}
+
+.article small {
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+input,
+select,
+textarea,
+button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+button {
+  background: var(--brand);
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .sidebar h1 {
+    grid-column: 1 / -1;
+  }
+}

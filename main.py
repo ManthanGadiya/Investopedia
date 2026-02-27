@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException, Query, status
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import func, or_
 from sqlalchemy.orm import Session, joinedload
@@ -29,6 +32,10 @@ from app.security import generate_access_token, hash_text, token_expiry
 
 app = FastAPI()
 auth_scheme = HTTPBearer(auto_error=False)
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR / "static"
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.on_event("startup")
@@ -39,6 +46,11 @@ def on_startup() -> None:
 @app.get("/")
 async def root():
     return {"message": "Investopedia API is running"}
+
+
+@app.get("/app", include_in_schema=False)
+async def app_home():
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 def _article_to_list_out(article: Article) -> ArticleListOut:
