@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <h1>Investopedia Guide</h1>
+  <header class="topbar">
+    <div class="brand">Investopedia Guide</div>
+    <nav class="menu">
       <button class="nav-btn active" data-view="home">Home</button>
       <button class="nav-btn" data-view="categories">Categories</button>
       <button class="nav-btn" data-view="articles">Articles</button>
@@ -17,70 +17,74 @@
       <button class="nav-btn" data-view="contact">Contact</button>
       <button class="nav-btn" data-view="auth">Login / Signup</button>
       <button class="nav-btn" id="logoutBtn">Logout</button>
-    </aside>
+    </nav>
+  </header>
 
-    <main class="content">
-      <section id="statusBar" class="card"></section>
+  <main class="content">
+    <section id="statusBar" class="card"></section>
 
-      <section id="home" class="view card">
-        <h2>Welcome</h2>
-        <p>This website provides simple guidance and updates for stocks, gold, silver, mutual funds, real estate, and more.</p>
-      </section>
+    <section id="home" class="view card">
+      <h2>Welcome</h2>
+      <p>Simple investment guidance portal with categories, random article discovery, and featured picks.</p>
+    </section>
 
-      <section id="categories" class="view card hidden">
-        <h2>Categories</h2>
-        <div id="categoriesList" class="grid"></div>
-      </section>
+    <section id="categories" class="view card hidden">
+      <h2>Categories</h2>
+      <div id="categoriesList" class="grid"></div>
+    </section>
 
-      <section id="articles" class="view card hidden">
-        <div class="row">
-          <h2>Articles</h2>
-          <input id="searchInput" type="text" placeholder="Search articles...">
-        </div>
-        <div class="row">
-          <select id="categoryFilter">
-            <option value="">All categories</option>
-          </select>
-          <button id="searchBtn">Search</button>
-        </div>
-        <div id="articlesList"></div>
-      </section>
+    <section id="articles" class="view card hidden">
+      <div class="row between">
+        <h2>Articles</h2>
+        <button id="refreshArticlesBtn">Refresh 10 Random</button>
+      </div>
+      <div class="row wrap">
+        <input id="searchInput" type="text" placeholder="Search articles...">
+        <select id="categoryFilter">
+          <option value="">All categories</option>
+        </select>
+        <button id="searchBtn">Apply Filter</button>
+      </div>
+      <div id="articlesList" class="grid"></div>
+    </section>
 
-      <section id="featured" class="view card hidden">
+    <section id="featured" class="view card hidden">
+      <div class="row between">
         <h2>Featured</h2>
-        <div id="featuredList"></div>
-      </section>
+        <button id="refreshFeaturedBtn">Refresh 10 Random</button>
+      </div>
+      <div id="featuredList" class="grid"></div>
+    </section>
 
-      <section id="contact" class="view card hidden">
-        <h2>Contact</h2>
-        <form id="contactForm">
-          <input name="name" placeholder="Name" required>
-          <input name="email" type="email" placeholder="Email" required>
-          <input name="subject" placeholder="Subject" required>
-          <textarea name="message" placeholder="Message" required></textarea>
-          <button type="submit">Send</button>
-        </form>
-      </section>
+    <section id="contact" class="view card hidden">
+      <h2>Contact</h2>
+      <form id="contactForm">
+        <input name="name" placeholder="Name" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="subject" placeholder="Subject" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
 
-      <section id="auth" class="view card hidden">
-        <h2>Login</h2>
-        <form id="loginForm">
-          <input name="email" type="email" placeholder="Email" required>
-          <input name="password" type="password" placeholder="Password" required>
-          <button type="submit">Login</button>
-        </form>
-        <h2>Signup</h2>
-        <form id="signupForm">
-          <input name="name" placeholder="Name" required>
-          <input name="email" type="email" placeholder="Email" required>
-          <input name="password" type="password" placeholder="Password" required>
-          <button type="submit">Signup</button>
-        </form>
-      </section>
+    <section id="auth" class="view card hidden">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <h2>Signup</h2>
+      <form id="signupForm">
+        <input name="name" placeholder="Name" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button type="submit">Signup</button>
+      </form>
+    </section>
 
-      <section id="articleDetail" class="view card hidden"></section>
-    </main>
-  </div>
+    <section id="articleDetail" class="view card hidden"></section>
+  </main>
   <script src="/static/app.js"></script>
 </body>
 </html>

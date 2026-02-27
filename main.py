@@ -68,6 +68,7 @@ def _article_to_list_out(article: Article) -> ArticleListOut:
         title=article.title,
         slug=article.slug,
         summary=article.summary,
+        cover_image_url=article.cover_image_url,
         is_featured=article.is_featured,
         published_at=article.published_at,
         category=ArticleCategoryOut(
@@ -250,6 +251,7 @@ def list_articles(
     search: str | None = Query(default=None, description="Search in title/summary/content"),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=50),
+    randomize: bool = Query(default=False, description="Return randomized records"),
     db: Session = Depends(get_db),
 ):
     query = (
@@ -273,12 +275,15 @@ def list_articles(
 
     total = query.count()
     offset = (page - 1) * page_size
-    records = (
-        query.order_by(Article.published_at.desc(), Article.id.desc())
-        .offset(offset)
-        .limit(page_size)
-        .all()
-    )
+    if randomize:
+        records = query.order_by(func.random()).limit(page_size).all()
+    else:
+        records = (
+            query.order_by(Article.published_at.desc(), Article.id.desc())
+            .offset(offset)
+            .limit(page_size)
+            .all()
+        )
 
     return ArticlesResponse(
         page=page,
@@ -304,16 +309,18 @@ def get_article(slug: str, db: Session = Depends(get_db)):
 @app.get("/api/featured", response_model=list[ArticleListOut])
 def get_featured(
     limit: int = Query(default=6, ge=1, le=20),
+    randomize: bool = Query(default=False, description="Return randomized records"),
     db: Session = Depends(get_db),
 ):
-    records = (
+    query = (
         db.query(Article)
         .options(joinedload(Article.category))
         .filter(Article.is_featured.is_(True), Article.status == "published")
-        .order_by(Article.published_at.desc(), Article.id.desc())
-        .limit(limit)
-        .all()
     )
+    if randomize:
+        records = query.order_by(func.random()).limit(limit).all()
+    else:
+        records = query.order_by(Article.published_at.desc(), Article.id.desc()).limit(limit).all()
     return [_article_to_list_out(article) for article in records]
 
 

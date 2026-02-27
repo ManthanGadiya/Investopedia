@@ -63,6 +63,7 @@ class ArticleListOut(BaseModel):
     title: str
     slug: str
     summary: str | None
+    cover_image_url: str | None
     is_featured: bool
     published_at: datetime
     category: ArticleCategoryOut

@@ -3,6 +3,8 @@ const state = {
   categories: [],
 };
 
+const API_BASE = window.location.port === "8000" ? "" : "http://127.0.0.1:8000";
+
 const views = ["home", "categories", "articles", "featured", "contact", "auth", "articleDetail"];
 const statusBar = document.getElementById("statusBar");
 const categoriesList = document.getElementById("categoriesList");
@@ -33,7 +35,7 @@ async function api(path, options = {}) {
   if (state.token) {
     headers.Authorization = `Bearer ${state.token}`;
   }
-  const response = await fetch(path, { ...options, headers });
+  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(body.detail || `Request failed: ${response.status}`);
@@ -42,10 +44,15 @@ async function api(path, options = {}) {
 }
 
 function articleCard(item) {
+  const img = item.cover_image_url || `https://picsum.photos/seed/${item.slug}/860/460`;
   return `
     <div class="article">
+      <img class="thumb" src="${img}" alt="${item.title}">
       <h3>${item.title}</h3>
-      <small>${item.category.name} | ${new Date(item.published_at).toLocaleString()}</small>
+      <small>
+        <button class="link-btn category-link" data-category="${item.category.slug}">${item.category.name}</button>
+        | ${new Date(item.published_at).toLocaleString()}
+      </small>
       <p>${item.summary || ""}</p>
       <button data-slug="${item.slug}" class="read-btn">Read</button>
     </div>
@@ -56,45 +63,78 @@ async function loadCategories() {
   const data = await api("/api/categories");
   state.categories = data;
   categoriesList.innerHTML = data
-    .map((c) => `<div class="chip"><strong>${c.name}</strong><div>${c.article_count} articles</div></div>`)
+    .map(
+      (c) => `
+      <div class="chip category-chip" data-category="${c.slug}">
+        <img class="thumb" src="${c.icon || `https://picsum.photos/seed/${c.slug}-cat/480/280`}" alt="${c.name}">
+        <strong>${c.name}</strong>
+        <div>${c.article_count} articles</div>
+      </div>`
+    )
     .join("");
   categoryFilter.innerHTML =
     `<option value="">All categories</option>` +
     data.map((c) => `<option value="${c.slug}">${c.name}</option>`).join("");
+  bindCategoryChips();
 }
 
 async function loadArticles() {
   const category = categoryFilter.value;
   const search = document.getElementById("searchInput").value.trim();
-  const qs = new URLSearchParams({ page: "1", page_size: "15" });
+  const qs = new URLSearchParams({ page: "1", page_size: "10", randomize: "true" });
   if (category) qs.set("category", category);
   if (search) qs.set("search", search);
   const data = await api(`/api/articles?${qs.toString()}`);
   articlesList.innerHTML = data.items.map(articleCard).join("") || "<p>No articles found.</p>";
-  bindReadButtons();
+  bindArticleActions();
 }
 
 async function loadFeatured() {
-  const data = await api("/api/featured?limit=12");
+  const data = await api("/api/featured?limit=10&randomize=true");
   featuredList.innerHTML = data.map(articleCard).join("") || "<p>No featured articles yet.</p>";
-  bindReadButtons();
+  bindArticleActions();
 }
 
 async function openArticle(slug) {
   const data = await api(`/api/articles/${slug}`);
+  const img = data.cover_image_url || `https://picsum.photos/seed/${data.slug}/860/460`;
   articleDetail.innerHTML = `
+    <img class="thumb" src="${img}" alt="${data.title}">
     <h2>${data.title}</h2>
-    <small>${data.category.name} | ${new Date(data.published_at).toLocaleString()}</small>
+    <small>
+      <button class="link-btn category-link" data-category="${data.category.slug}">${data.category.name}</button>
+      | ${new Date(data.published_at).toLocaleString()}
+    </small>
     <p><strong>Summary:</strong> ${data.summary || "N/A"}</p>
     <p>${data.content}</p>
   `;
   showView("articleDetail");
+  bindArticleActions();
 }
 
-function bindReadButtons() {
+function bindArticleActions() {
   document.querySelectorAll(".read-btn").forEach((btn) => {
     btn.onclick = () => openArticle(btn.dataset.slug);
   });
+  document.querySelectorAll(".category-link").forEach((btn) => {
+    btn.onclick = () => filterByCategory(btn.dataset.category);
+  });
+}
+
+function bindCategoryChips() {
+  document.querySelectorAll(".category-chip").forEach((chip) => {
+    chip.onclick = () => filterByCategory(chip.dataset.category);
+  });
+}
+
+async function filterByCategory(slug) {
+  categoryFilter.value = slug;
+  showView("articles");
+  await loadArticles();
+  const category = state.categories.find((c) => c.slug === slug);
+  if (category) {
+    setStatus(`Showing random 10 articles for category: ${category.name}`);
+  }
 }
 
 async function initSession() {
@@ -128,6 +168,22 @@ document.querySelectorAll(".nav-btn[data-view]").forEach((btn) => {
 document.getElementById("searchBtn").onclick = async () => {
   try {
     await loadArticles();
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+};
+
+document.getElementById("refreshArticlesBtn").onclick = async () => {
+  try {
+    await loadArticles();
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+};
+
+document.getElementById("refreshFeaturedBtn").onclick = async () => {
+  try {
+    await loadFeatured();
   } catch (e) {
     setStatus(e.message, true);
   }
@@ -211,6 +267,7 @@ document.getElementById("logoutBtn").onclick = async () => {
 
 initSession().then(async () => {
   try {
+    await loadCategories();
     await loadFeatured();
   } catch (e) {
     setStatus(e.message, true);
